@@ -6,7 +6,7 @@ import { joinWaitlist } from "../actions/waitlist"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Loader2 } from "lucide-react"
+import { EnhancedLoaderIcon } from "./icons/enhanced-icons"
 import { useToast } from "@/components/ui/use-toast"
 
 interface WaitlistFormProps {
@@ -86,8 +86,8 @@ export function WaitlistForm({ onSuccess }: WaitlistFormProps) {
         disabled={isPending || !role}
         className="w-full bg-gradient-to-r from-steerify-blue to-steerify-teal hover:from-steerify-blue/90 hover:to-steerify-teal/90 text-white font-bold py-4 rounded-xl text-lg transition-all duration-300 transform hover:scale-105 shadow-lg"
       >
-        {isPending ? <Loader2 className="h-5 w-5 animate-spin mr-2" /> : null}
-        {isPending ? "Joining..." : "Join the Waitlist"}
+        {isPending ? <EnhancedLoaderIcon className="h-5 w-5 animate-spin mr-2" /> : null}
+        {isPending ? "Joining..." : "🟢 Join the Waitlist Now"}
       </Button>
     </form>
   )
