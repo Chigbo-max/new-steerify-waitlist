@@ -24,9 +24,10 @@ export default async function AdminPage() {
     error = String(err);
   }
 
-
   // Remove _id and ensure all fields are serializable
-  const safeSubscribers = (subscribers as any[]).map(({ _id, ...rest }) => ({ ...rest }));
+  const safeSubscribers = (subscribers as any[]).map(({ _id, ...rest }) => ({
+    ...rest,
+  }));
 
   const customerCount = safeSubscribers.filter(
     sub => sub.role === "customer"
