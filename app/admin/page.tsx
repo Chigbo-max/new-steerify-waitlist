@@ -1,37 +1,60 @@
-import { getAllSubscribers } from "../actions/waitlist"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Users, Calendar, Mail, UserCheck } from "lucide-react"
+import { getAllSubscribers } from "../actions/waitlist";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Users, Calendar, Mail, UserCheck } from "lucide-react";
+import BulkEmailForm from "../components/bulk-email-form";
 
 export default async function AdminPage() {
-  let subscribers = []
-  let error = null
-
-  try {
-    console.log("[v0] Admin page: Fetching subscribers")
-    subscribers = await getAllSubscribers()
-    console.log("[v0] Admin page: Got subscribers:", subscribers.length)
-  } catch (err) {
-    console.error("[v0] Admin page: Error fetching subscribers:", err)
-    error = err
+  interface Subscriber {
+    name: string;
+    email: string;
+    role: "customer" | "provider";
+    joinedAt: string;
   }
 
-  const customerCount = subscribers.filter((sub) => sub.role === "customer").length
-  const providerCount = subscribers.filter((sub) => sub.role === "provider").length
+  let subscribers: Subscriber[] = [];
+  let error: string | null = null;
+
+  try {
+    console.log("[v0] Admin page: Fetching subscribers");
+    subscribers = await getAllSubscribers();
+    console.log("[v0] Admin page: Got subscribers:", subscribers.length);
+  } catch (err) {
+    console.error("[v0] Admin page: Error fetching subscribers:", err);
+    error = String(err);
+  }
+
+
+  // Remove _id and ensure all fields are serializable
+  const safeSubscribers = (subscribers as any[]).map(({ _id, ...rest }) => ({ ...rest }));
+
+  const customerCount = safeSubscribers.filter(
+    sub => sub.role === "customer"
+  ).length;
+  const providerCount = safeSubscribers.filter(
+    sub => sub.role === "provider"
+  ).length;
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-7xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-steerify-blue mb-2">Waitlist Dashboard</h1>
-          <p className="text-gray-600">Manage your Steerify Cleaning waitlist subscribers</p>
+          <h1 className="text-3xl font-bold text-steerify-blue mb-2">
+            Waitlist Dashboard
+          </h1>
+          <p className="text-gray-600">
+            Manage your Steerify Cleaning waitlist subscribers
+          </p>
         </div>
+
+        {/* Bulk/Selective Email Section */}
+        <BulkEmailForm subscribers={safeSubscribers} />
 
         {error && (
           <Card className="mb-6 border-red-200 bg-red-50">
             <CardContent className="pt-6">
               <div className="text-red-800">
-                <strong>Error loading subscribers:</strong> {error.toString()}
+                <strong>Error loading subscribers:</strong> {error}
               </div>
             </CardContent>
           </Card>
@@ -41,11 +64,15 @@ export default async function AdminPage() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Subscribers</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                Total Subscribers
+              </CardTitle>
               <Users className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-steerify-blue">{subscribers.length}</div>
+              <div className="text-2xl font-bold text-steerify-blue">
+                {subscribers.length}
+              </div>
             </CardContent>
           </Card>
 
@@ -55,7 +82,9 @@ export default async function AdminPage() {
               <UserCheck className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-green-600">{customerCount}</div>
+              <div className="text-2xl font-bold text-green-600">
+                {customerCount}
+              </div>
             </CardContent>
           </Card>
 
@@ -65,19 +94,27 @@ export default async function AdminPage() {
               <UserCheck className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-blue-600">{providerCount}</div>
+              <div className="text-2xl font-bold text-blue-600">
+                {providerCount}
+              </div>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Latest Signup</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                Latest Signup
+              </CardTitle>
               <Calendar className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-sm font-medium">
                 {subscribers.length > 0
-                  ? new Date(Math.max(...subscribers.map((s) => new Date(s.joinedAt).getTime()))).toLocaleDateString()
+                  ? new Date(
+                      Math.max(
+                        ...subscribers.map(s => new Date(s.joinedAt).getTime())
+                      )
+                    ).toLocaleDateString()
                   : "No signups yet"}
               </div>
             </CardContent>
@@ -105,19 +142,36 @@ export default async function AdminPage() {
                       <th className="text-left py-3 px-4 font-medium">Name</th>
                       <th className="text-left py-3 px-4 font-medium">Email</th>
                       <th className="text-left py-3 px-4 font-medium">Role</th>
-                      <th className="text-left py-3 px-4 font-medium">Joined</th>
+                      <th className="text-left py-3 px-4 font-medium">
+                        Joined
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
                     {subscribers
-                      .sort((a, b) => new Date(b.joinedAt).getTime() - new Date(a.joinedAt).getTime())
+                      .sort(
+                        (a, b) =>
+                          new Date(b.joinedAt).getTime() -
+                          new Date(a.joinedAt).getTime()
+                      )
                       .map((subscriber, index) => (
-                        <tr key={subscriber.email} className="border-b hover:bg-gray-50">
-                          <td className="py-3 px-4 font-medium">{subscriber.name}</td>
-                          <td className="py-3 px-4 text-gray-600">{subscriber.email}</td>
+                        <tr
+                          key={subscriber.email}
+                          className="border-b hover:bg-gray-50"
+                        >
+                          <td className="py-3 px-4 font-medium">
+                            {subscriber.name}
+                          </td>
+                          <td className="py-3 px-4 text-gray-600">
+                            {subscriber.email}
+                          </td>
                           <td className="py-3 px-4">
                             <Badge
-                              variant={subscriber.role === "customer" ? "default" : "secondary"}
+                              variant={
+                                subscriber.role === "customer"
+                                  ? "default"
+                                  : "secondary"
+                              }
                               className={
                                 subscriber.role === "customer"
                                   ? "bg-green-100 text-green-800"
@@ -128,13 +182,16 @@ export default async function AdminPage() {
                             </Badge>
                           </td>
                           <td className="py-3 px-4 text-gray-500">
-                            {new Date(subscriber.joinedAt).toLocaleDateString("en-US", {
-                              year: "numeric",
-                              month: "short",
-                              day: "numeric",
-                              hour: "2-digit",
-                              minute: "2-digit",
-                            })}
+                            {new Date(subscriber.joinedAt).toLocaleDateString(
+                              "en-US",
+                              {
+                                year: "numeric",
+                                month: "short",
+                                day: "numeric",
+                                hour: "2-digit",
+                                minute: "2-digit",
+                              }
+                            )}
                           </td>
                         </tr>
                       ))}
@@ -146,5 +203,5 @@ export default async function AdminPage() {
         </Card>
       </div>
     </div>
-  )
+  );
 }
