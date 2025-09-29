@@ -23,7 +23,7 @@ export function WaitlistForm({ onSuccess }: WaitlistFormProps) {
   useEffect(() => {
     if (state?.success) {
       toast({
-        title: "🎉 Thank you for signing up!",
+        title: "Thank you for signing up!",
         description: "We'll notify you when Steerify Cleaning launches in your city.",
         duration: 5000,
       })
@@ -84,10 +84,10 @@ export function WaitlistForm({ onSuccess }: WaitlistFormProps) {
       <Button
         type="submit"
         disabled={isPending || !role}
-        className="w-full bg-gradient-to-r from-steerify-blue to-steerify-teal hover:from-steerify-blue/90 hover:to-steerify-teal/90 text-white font-bold py-4 rounded-xl text-lg transition-all duration-300 transform hover:scale-105 shadow-lg"
+        className="w-full bg-gradient-to-r from-steerify-blue to-steerify-teal hover:from-steerify-blue/90 hover:to-steerify-teal/90 text-white font-bold py-4 rounded-xl text-lg transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center justify-center"
       >
         {isPending ? <EnhancedLoaderIcon className="h-5 w-5 animate-spin mr-2" /> : null}
-        {isPending ? "Joining..." : "🟢 Join the Waitlist Now"}
+        {isPending ? "Joining..." : "Join the Waitlist Now"}
       </Button>
     </form>
   )

@@ -7,12 +7,21 @@ import {
   EnhancedUsersIcon,
   EnhancedHomeIcon,
   EnhancedCleaningIcon,
-  EnhancedLocationIcon,
   EnhancedShieldIcon,
   EnhancedMoneyIcon,
-  EnhancedClockIcon,
   EnhancedSearchIcon,
   EnhancedCheckIcon,
+  EnhancedArrowIcon,
+  EnhancedFireIcon,
+  EnhancedBoltIcon,
+  EnhancedTrendingIcon,
+  EnhancedRocketIcon,
+  EnhancedBriefcaseIcon,
+  EnhancedHouseIcon,
+  EnhancedStarIcon,
+  EnhancedCircleCheckIcon,
+  EnhancedGreenCircleIcon,
+  EnhancedSparkleIcon,
 } from "./icons/enhanced-icons"
 import Image from "next/image"
 
@@ -69,7 +78,10 @@ export function WaitlistSignup() {
               </div>
             </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 text-balance">
-              👉 Nigeria's #1 Smart Cleaning Marketplace — Launching Soon
+              <span className="inline-flex items-center">
+                <EnhancedArrowIcon className="w-12 h-12 mr-4 text-green-400" />
+                Nigeria's #1 Smart Cleaning Marketplace — Launching Soon
+              </span>
             </h1>
             <p className="text-xl sm:text-2xl text-white/90 mb-8 max-w-4xl mx-auto text-pretty">
               Book trusted cleaners in minutes. Grow your cleaning business with AI-powered matching and
@@ -78,9 +90,10 @@ export function WaitlistSignup() {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
               <button
                 onClick={() => document.getElementById("waitlist-form")?.scrollIntoView({ behavior: "smooth" })}
-                className="bg-green-600 hover:bg-green-700 text-white font-bold px-8 py-4 rounded-xl text-lg transition-all duration-300 transform hover:scale-105 shadow-lg"
+                className="bg-green-600 hover:bg-green-700 text-white font-bold px-8 py-4 rounded-xl text-lg transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center"
               >
-                🔵 Join the Waitlist – Get Early Access
+                <EnhancedGreenCircleIcon className="w-6 h-6 mr-3" />
+                Join the Waitlist – Get Early Access
               </button>
             </div>
             <div className="flex items-center justify-center gap-2 text-white/80">
@@ -165,13 +178,13 @@ export function WaitlistSignup() {
             {/* For Customers */}
             <div className="bg-white p-8 rounded-3xl shadow-lg">
               <h3 className="text-2xl font-bold text-steerify-blue mb-6 flex items-center">
-                <span className="mr-3">🏠</span>
+                <EnhancedHouseIcon className="w-8 h-8 mr-3 text-green-600" />
                 For Customers
               </h3>
               <div className="space-y-6">
                 <div className="flex items-start">
                   <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center mr-4 flex-shrink-0 mt-1">
-                    <span className="text-white text-sm">🧹</span>
+                    <EnhancedCleaningIcon className="w-4 h-4 text-white" />
                   </div>
                   <div>
                     <h4 className="font-bold text-steerify-blue mb-1">Book verified cleaners in minutes</h4>
@@ -180,7 +193,7 @@ export function WaitlistSignup() {
                 </div>
                 <div className="flex items-start">
                   <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center mr-4 flex-shrink-0 mt-1">
-                    <span className="text-white text-sm">🔒</span>
+                    <EnhancedShieldIcon className="w-4 h-4 text-white" />
                   </div>
                   <div>
                     <h4 className="font-bold text-steerify-blue mb-1">Pay safely with escrow</h4>
@@ -189,7 +202,7 @@ export function WaitlistSignup() {
                 </div>
                 <div className="flex items-start">
                   <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center mr-4 flex-shrink-0 mt-1">
-                    <span className="text-white text-sm">⭐</span>
+                    <EnhancedStarIcon className="w-4 h-4 text-white" />
                   </div>
                   <div>
                     <h4 className="font-bold text-steerify-blue mb-1">Reliable ratings & reviews</h4>
@@ -202,13 +215,13 @@ export function WaitlistSignup() {
             {/* For Providers */}
             <div className="bg-white p-8 rounded-3xl shadow-lg">
               <h3 className="text-2xl font-bold text-steerify-blue mb-6 flex items-center">
-                <span className="mr-3">💼</span>
+                <EnhancedBriefcaseIcon className="w-8 h-8 mr-3 text-green-600" />
                 For Providers
               </h3>
               <div className="space-y-6">
                 <div className="flex items-start">
                   <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center mr-4 flex-shrink-0 mt-1">
-                    <span className="text-white text-sm">📈</span>
+                    <EnhancedTrendingIcon className="w-4 h-4 text-white" />
                   </div>
                   <div>
                     <h4 className="font-bold text-steerify-blue mb-1">Get AI-matched with quality customers</h4>
@@ -217,7 +230,7 @@ export function WaitlistSignup() {
                 </div>
                 <div className="flex items-start">
                   <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center mr-4 flex-shrink-0 mt-1">
-                    <span className="text-white text-sm">💰</span>
+                    <EnhancedMoneyIcon className="w-4 h-4 text-white" />
                   </div>
                   <div>
                     <h4 className="font-bold text-steerify-blue mb-1">Guaranteed secure payments</h4>
@@ -226,7 +239,7 @@ export function WaitlistSignup() {
                 </div>
                 <div className="flex items-start">
                   <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center mr-4 flex-shrink-0 mt-1">
-                    <span className="text-white text-sm">🚀</span>
+                    <EnhancedRocketIcon className="w-4 h-4 text-white" />
                   </div>
                   <div>
                     <h4 className="font-bold text-steerify-blue mb-1">Boost your business visibility</h4>
@@ -242,98 +255,17 @@ export function WaitlistSignup() {
       <section className="py-20 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="bg-gradient-to-br from-red-50 to-orange-50 p-8 rounded-3xl border-2 border-red-200">
-            <h2 className="text-3xl font-bold text-steerify-blue mb-4">🔥 Limited Early Access</h2>
+            <h2 className="text-3xl font-bold text-steerify-blue mb-4 flex items-center justify-center">
+              <EnhancedFireIcon className="w-8 h-8 mr-3 text-red-500" />
+              Limited Early Access
+            </h2>
             <p className="text-xl text-gray-700 mb-6">
               Early members enjoy priority bookings, exclusive discounts, and premium business placement on launch.
             </p>
-            <p className="text-lg text-red-600 font-semibold">⚡ Spots are limited — don't miss out.</p>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-steerify-blue mb-4">
-              Finally, Reliable Cleaning Services in Nigeria
-            </h2>
-            <p className="text-xl text-gray-600">
-              No more stress, no more unreliable cleaners. Just quality service when you need it.
+            <p className="text-lg text-red-600 font-semibold flex items-center justify-center">
+              <EnhancedBoltIcon className="w-5 h-5 mr-2 text-yellow-500" />
+              Spots are limited — don't miss out.
             </p>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="bg-white p-6 rounded-2xl shadow-lg text-center">
-              <div className="w-16 h-16 bg-green-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <EnhancedLocationIcon className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-xl font-bold text-steerify-blue mb-2">Lagos • Abuja • PH</h3>
-              <p className="text-gray-600">Starting in major cities, expanding nationwide</p>
-            </div>
-            <div className="bg-white p-6 rounded-2xl shadow-lg text-center">
-              <div className="w-16 h-16 bg-green-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <EnhancedShieldIcon className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-xl font-bold text-steerify-blue mb-2">Verified Cleaners</h3>
-              <p className="text-gray-600">Background checks, references, and insurance coverage</p>
-            </div>
-            <div className="bg-white p-6 rounded-2xl shadow-lg text-center">
-              <div className="w-16 h-16 bg-green-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <EnhancedMoneyIcon className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-xl font-bold text-steerify-blue mb-2">Fair Pricing</h3>
-              <p className="text-gray-600">Transparent rates, no hidden fees, pay securely</p>
-            </div>
-            <div className="bg-white p-6 rounded-2xl shadow-lg text-center">
-              <div className="w-16 h-16 bg-green-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <EnhancedClockIcon className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-xl font-bold text-steerify-blue mb-2">On-Time Service</h3>
-              <p className="text-gray-600">Book today, clean tomorrow. No more waiting weeks</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Waitlist Signup Form Section */}
-      <section id="waitlist-form" className="py-20 bg-gray-50">
-        <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold text-steerify-blue mb-4">
-            Be among the first to experience Steerify Cleaning.
-          </h2>
-          <p className="text-xl text-gray-600 mb-12">
-            Early members enjoy priority bookings, premium visibility, and exclusive rewards.
-          </p>
-          <WaitlistForm onSuccess={handleSuccess} />
-        </div>
-      </section>
-
-      <section className="py-20 bg-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-steerify-blue mb-8">Built for Trust, Simplicity, and Reliability</h2>
-          </div>
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="text-center p-6">
-              <div className="w-16 h-16 bg-green-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <EnhancedCheckIcon className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-xl font-bold text-steerify-blue mb-2">✅ Secure escrow payments</h3>
-              <p className="text-gray-600">Your money is safe — funds released only after job completion</p>
-            </div>
-            <div className="text-center p-6">
-              <div className="w-16 h-16 bg-green-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <EnhancedShieldIcon className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-xl font-bold text-steerify-blue mb-2">✅ All providers are verified</h3>
-              <p className="text-gray-600">Background checks and verification before joining our platform</p>
-            </div>
-            <div className="text-center p-6">
-              <div className="w-16 h-16 bg-green-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <EnhancedCleaningIcon className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-xl font-bold text-steerify-blue mb-2">✅ Built for trust & reliability</h3>
-              <p className="text-gray-600">Designed with simplicity and dependability at its core</p>
-            </div>
           </div>
         </div>
       </section>
@@ -411,9 +343,10 @@ export function WaitlistSignup() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
             <button
               onClick={() => document.getElementById("waitlist-form")?.scrollIntoView({ behavior: "smooth" })}
-              className="bg-green-600 hover:bg-green-700 text-white font-bold px-8 py-4 rounded-xl text-lg transition-all duration-300 transform hover:scale-105 shadow-lg"
+              className="bg-green-600 hover:bg-green-700 text-white font-bold px-8 py-4 rounded-xl text-lg transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center"
             >
-              ✨ Join the Waitlist Today
+              <EnhancedSparkleIcon className="w-6 h-6 mr-3" />
+              Join the Waitlist Today
             </button>
             <div className="flex gap-6 text-white/80">
               <a href="#" className="hover:text-white transition-colors">
@@ -426,6 +359,60 @@ export function WaitlistSignup() {
           </div>
           <div className="mt-12 pt-8 border-t border-white/20">
             <p className="text-white/80 text-lg">Cleaning made simple. Payments made safe.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Waitlist Signup Form Section */}
+      <section id="waitlist-form" className="py-20 bg-gray-50">
+        <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl sm:text-4xl font-bold text-steerify-blue mb-4">
+            Be among the first to experience Steerify Cleaning.
+          </h2>
+          <p className="text-xl text-gray-600 mb-12">
+            Early members enjoy priority bookings, premium visibility, and exclusive rewards.
+          </p>
+          <WaitlistForm onSuccess={handleSuccess} />
+        </div>
+      </section>
+
+      {/* Built for Trust, Simplicity, and Reliability Section */}
+      <section className="py-20 bg-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-steerify-blue mb-8">Built for Trust, Simplicity, and Reliability</h2>
+          </div>
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="text-center p-6">
+              <div className="w-16 h-16 bg-green-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <EnhancedCheckIcon className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-steerify-blue mb-2 flex items-center justify-center">
+                <EnhancedCircleCheckIcon className="w-5 h-5 mr-2 text-green-600" />
+                Secure escrow payments
+              </h3>
+              <p className="text-gray-600">Your money is safe — funds released only after job completion</p>
+            </div>
+            <div className="text-center p-6">
+              <div className="w-16 h-16 bg-green-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <EnhancedShieldIcon className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-steerify-blue mb-2 flex items-center justify-center">
+                <EnhancedCircleCheckIcon className="w-5 h-5 mr-2 text-green-600" />
+                All providers are verified
+              </h3>
+              <p className="text-gray-600">Background checks and verification before joining our platform</p>
+            </div>
+            <div className="text-center p-6">
+              <div className="w-16 h-16 bg-green-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <EnhancedCleaningIcon className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-steerify-blue mb-2 flex items-center justify-center">
+                <EnhancedCircleCheckIcon className="w-5 h-5 mr-2 text-green-600" />
+                Built for trust & reliability
+              </h3>
+              <p className="text-gray-600">Designed with simplicity and dependability at its core</p>
+            </div>
           </div>
         </div>
       </section>
