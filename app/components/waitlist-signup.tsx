@@ -26,46 +26,42 @@ import {
 import Image from "next/image"
 
 export function WaitlistSignup() {
-  const [waitlistCount, setWaitlistCount] = useState(1000)
+  const [waitlistCount, setWaitlistCount] = useState<number | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
+  // Fetch initial count
   useEffect(() => {
-    getWaitlistCount().then((count) => setWaitlistCount(count + 1000))
+    const fetchCount = async () => {
+      try {
+        setIsLoading(true)
+        setError(null)
+        const count = await getWaitlistCount()
+        setWaitlistCount(count) // Add base count as per your logic
+      } catch (err) {
+        console.error("Failed to fetch waitlist count:", err)
+        setError("Failed to load waitlist count")
+        setWaitlistCount(0) // Fallback to base coun
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchCount()
   }, [])
 
   const handleSuccess = (count: number) => {
-    setWaitlistCount(count + 1000)
+    setWaitlistCount(count)
+  }
+
+  // Format number with commas for better readability
+  const formatCount = (count: number | null) => {
+    if (count === null) return "1,000+"
+    return count.toLocaleString() + "+"
   }
 
   return (
     <div className="min-h-screen bg-white">
-      <nav className="bg-white shadow-sm border-b border-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
-              <Image src="/images/steerify-logo-new.png" alt="Steerify" width={40} height={40} className="mr-3" />
-              <span className="text-2xl font-bold text-steerify-blue">Steerify</span>
-            </div>
-            <div className="hidden md:flex items-center space-x-8">
-              <a href="#how-it-works" className="text-gray-600 hover:text-steerify-blue transition-colors">
-                How It Works
-              </a>
-              <a href="#pricing" className="text-gray-600 hover:text-steerify-blue transition-colors">
-                Pricing
-              </a>
-              <a href="#about" className="text-gray-600 hover:text-steerify-blue transition-colors">
-                About
-              </a>
-              <button
-                onClick={() => document.getElementById("waitlist-form")?.scrollIntoView({ behavior: "smooth" })}
-                className="bg-steerify-blue hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg transition-colors"
-              >
-                Join Waitlist
-              </button>
-            </div>
-          </div>
-        </div>
-      </nav>
-
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-steerify-blue via-steerify-blue to-steerify-teal">
         <div className="absolute inset-0 bg-[url('/images/pattern.png')] opacity-5"></div>
@@ -73,8 +69,13 @@ export function WaitlistSignup() {
           <div className="text-center">
             <div className="flex justify-center mb-8">
               <div className="flex items-center bg-white/10 backdrop-blur-sm rounded-2xl px-6 py-3">
-                <Image src="/images/steerify-logo-new.png" alt="Steerify" width={48} height={48} className="mr-4" />
-                <span className="text-3xl font-bold text-white">Steerify</span>
+                <Image 
+                  src="/images/steerify-logo-new.png" 
+                  alt="Steerify" 
+                  width={48} 
+                  height={48} 
+                  className="items-center" 
+                />
               </div>
             </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 text-balance">
@@ -98,7 +99,15 @@ export function WaitlistSignup() {
             </div>
             <div className="flex items-center justify-center gap-2 text-white/80">
               <EnhancedUsersIcon className="w-5 h-5" />
-              <span className="font-semibold">Over {waitlistCount}+ customers & providers already signed up.</span>
+              <span className="font-semibold">
+                {isLoading ? (
+                  "Loading..."
+                ) : error ? (
+                  "Over 1,000+ customers & providers already signed up."
+                ) : (
+                  `Over ${formatCount(waitlistCount)} customers & providers already signed up.`
+                )}
+              </span>
             </div>
           </div>
           <div className="mt-16 flex justify-center">

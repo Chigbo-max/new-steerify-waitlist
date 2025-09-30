@@ -1,67 +1,16 @@
 "use server";
 
-// Bulk email action for admin
-export async function sendBulkEmail({
-  subject,
-  body,
-  emails,
-}: {
-  subject: string;
-  body: string;
-  emails: string[];
-}) {
-  if (!process.env.RESEND_API_KEY) {
-    return { success: false, message: "Resend API key not configured." };
-  }
-  if (!subject || !body || !emails || emails.length === 0) {
-    return {
-      success: false,
-      message: "Subject, body, and at least one recipient are required.",
-    };
-  }
-  try {
-    const resend = new Resend(process.env.RESEND_API_KEY);
-    // Send emails in parallel (could be throttled if needed)
-    const results = await Promise.all(
-      emails.map(async email => {
-        const { error } = await resend.emails.send({
-          from: "Steerify <onboarding@resend.dev>",
-          to: email,
-          subject,
-          html: `<div style='font-family:sans-serif;line-height:1.5;'>${body.replace(/\n/g, "<br/>")}</div>`,
-        });
-        return { email, error };
-      })
-    );
-    const failed = results.filter(r => r.error);
-    if (failed.length > 0) {
-      return {
-        success: false,
-        message: `Failed to send to: ${failed.map(f => f.email).join(", ")}`,
-      };
-    }
-    return {
-      success: true,
-      message: `Sent to ${emails.length} subscriber(s).`,
-    };
-  } catch (err) {
-    console.error("[admin] Bulk email error:", err);
-    return {
-      success: false,
-      message: "An error occurred while sending emails.",
-    };
-  }
-}
-
 import { z } from "zod";
 import { Resend } from "resend";
 import { EmailTemplate } from "../components/email-template";
 import {
   addSubscriber,
+  deleteSubscriber,
   getAllSubscribers as getStoredSubscribers,
   getSubscriberCount,
 } from "../lib/storage";
 
+// Validation schema
 const schema = z.object({
   name: z.string().min(1, "Name is required"),
   email: z.string().email("Invalid email address"),
@@ -72,9 +21,9 @@ const schema = z.object({
 
 export async function joinWaitlist(prevState: any, formData: FormData) {
   try {
-    const name = formData.get("name");
-    const email = formData.get("email");
-    const role = formData.get("role");
+    const name = formData.get("name") as string;
+    const email = formData.get("email") as string;
+    const role = formData.get("role") as string;
 
     if (!name || !email || !role) {
       return { success: false, message: "All fields are required" };
@@ -87,9 +36,9 @@ export async function joinWaitlist(prevState: any, formData: FormData) {
     }
 
     const subscriber = {
-      name: name.toString(),
-      email: email.toString(),
-      role: role.toString() as "customer" | "provider",
+      name: name,
+      email: email,
+      role: role as "customer" | "provider",
       joinedAt: new Date().toISOString(),
     };
 
@@ -102,39 +51,55 @@ export async function joinWaitlist(prevState: any, formData: FormData) {
       };
     }
 
-    // Send welcome email using Resend (optional - only if API key is configured)
+    // Send welcome email using Resend
     if (process.env.RESEND_API_KEY) {
-      try {
-        const resend = new Resend(process.env.RESEND_API_KEY);
-        const { data, error } = await resend.emails.send({
-          from: "Steerify <onboarding@resend.dev>",
-          to: email.toString(),
-          subject: "Welcome to Steerify Waitlist!",
-          html: EmailTemplate({ email: email.toString() }),
-        });
+  try {
+    const resend = new Resend(process.env.RESEND_API_KEY);
+    
+    const { data, error } = await resend.emails.send({
+      from: "Steerify <onboarding@resend.dev>",
+      to: email,
+      subject: "Welcome to Steerify Waitlist! 🎉",
+      react: EmailTemplate({ email, name }),
+    });
 
-        if (error) {
-          console.error("Error sending email:", error);
-          // Don't fail the entire operation if email fails
-        }
-      } catch (emailError) {
-        console.error("Email service error:", emailError);
-        // Continue without failing the waitlist signup
-      }
+    if (error) {
+      console.error("Resend error details:", {
+        message: error.message,
+        name: error.name,
+      });
+      // Return error for debugging
+      return {
+        success: false,
+        message: `Email failed: ${error.message}`,
+      };
     } else {
-      console.log("Resend API key not configured - skipping email");
+      console.log("✅ Email sent successfully to:", email);
     }
+  } catch (emailError) {
+    console.error("❌ Email service error:", emailError);
+    return {
+      success: false,
+      message: `Email service error: ${emailError instanceof Error ? emailError.message : 'Unknown error'}`,
+    };
+  }
+} else {
+  console.error("❌ RESEND_API_KEY missing");
+  return {
+    success: false,
+    message: "Email service not configured",
+  };
+}
 
     const count = await getWaitlistCount();
 
     return {
       success: true,
-      message:
-        "You have been added to the waitlist! We'll notify you when we launch.",
+      message: "You have been added to the waitlist! Check your email for confirmation.",
       count,
     };
   } catch (error) {
-    console.error("Error:", error);
+    console.error("Error joining waitlist:", error);
     return {
       success: false,
       message: "An unexpected error occurred. Please try again.",
@@ -160,4 +125,90 @@ export async function getAllSubscribers() {
     console.error("[v0] Error fetching subscribers:", error);
     return [];
   }
+}
+
+export async function deleteSubscriberAction(email: string) {
+  try {
+    if (!email) {
+      return { success: false, message: "Email is required" };
+    }
+
+    const deleted = await deleteSubscriber(email);
+    
+    if (!deleted) {
+      return { success: false, message: "Subscriber not found" };
+    }
+
+    return { 
+      success: true, 
+      message: "Subscriber deleted successfully" 
+    };
+  } catch (error) {
+    console.error("Error deleting subscriber:", error);
+    return {
+      success: false,
+      message: "An unexpected error occurred while deleting subscriber.",
+    };
+  }
+}
+
+// Bulk email action for admin
+export async function sendBulkEmail({
+  subject,
+  body,
+  emails,
+}: {
+  subject: string;
+  body: string;
+  emails: string[];
+}) {
+  if (!process.env.RESEND_API_KEY) {
+    return { success: false, message: "Resend API key not configured." };
+  }
+  
+  if (!subject || !body || !emails || emails.length === 0) {
+    return {
+      success: false,
+      message: "Subject, body, and at least one recipient are required.",
+    };
+  }
+  
+  try {
+    const resend = new Resend(process.env.RESEND_API_KEY);
+    
+    // Send emails in parallel (could be throttled if needed)
+    const results = await Promise.all(
+      emails.map(async (email) => {
+        const { error } = await resend.emails.send({
+          from: "Steerify <onboarding@resend.dev>",
+          to: email,
+          subject,
+          html: `<div style='font-family:sans-serif;line-height:1.5;'>${body.replace(/\n/g, "<br/>")}</div>`,
+        });
+        return { email, error };
+      })
+    );
+    
+    const failed = results.filter(r => r.error);
+    if (failed.length > 0) {
+      return {
+        success: false,
+        message: `Failed to send to: ${failed.map(f => f.email).join(", ")}`,
+      };
+    }
+    
+    return {
+      success: true,
+      message: `Sent to ${emails.length} subscriber(s).`,
+    };
+  } catch (err) {
+    console.error("[admin] Bulk email error:", err);
+    return {
+      success: false,
+      message: "An error occurred while sending emails.",
+    };
+  }
+
+
+
 }

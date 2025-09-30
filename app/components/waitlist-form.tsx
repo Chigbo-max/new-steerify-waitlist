@@ -11,7 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { EnhancedLoaderIcon } from "./icons/enhanced-icons";
+import { EnhancedLoaderIcon, EnhancedCheckIcon } from "./icons/enhanced-icons";
 import { useToast } from "@/components/ui/use-toast";
 
 interface WaitlistFormProps {
@@ -23,6 +23,7 @@ export function WaitlistForm({ onSuccess }: WaitlistFormProps) {
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("");
   const [isPending, setIsPending] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -35,10 +36,10 @@ export function WaitlistForm({ onSuccess }: WaitlistFormProps) {
     try {
       const result = await joinWaitlist(null, formData);
       if (result?.success) {
+        setIsSubmitted(true); // Show success message
         toast({
           title: "Thank you for signing up!",
-          description:
-            "We'll notify you when Steerify Cleaning launches in your city.",
+          description: "We'll notify you when Steerify Cleaning launches in your city.",
           duration: 5000,
         });
         if (result.count) {
@@ -67,6 +68,25 @@ export function WaitlistForm({ onSuccess }: WaitlistFormProps) {
     }
   };
 
+  // Success state - replaces the form
+  if (isSubmitted) {
+    return (
+      <div className="bg-green-50 border-2 border-green-200 rounded-2xl p-8 text-center">
+        <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <EnhancedCheckIcon className="w-8 h-8 text-green-600" />
+        </div>
+        <h3 className="text-2xl font-bold text-green-800 mb-2">You're on the list!</h3>
+        <p className="text-green-700 text-lg mb-4">
+          Thank you for joining the Steerify waitlist. Your information has been successfully added.
+        </p>
+        <p className="text-green-600">
+          Keep an eye on your inbox - we'll send you early access details and launch updates soon!
+        </p>
+      </div>
+    );
+  }
+
+  // Original form
   return (
     <form onSubmit={handleSubmit} className="w-full max-w-md mx-auto space-y-6">
       <div className="space-y-4">

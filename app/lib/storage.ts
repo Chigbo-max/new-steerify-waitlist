@@ -7,6 +7,10 @@ export interface Subscriber {
 
 import { getWaitlistCollection } from "./mongodb";
 
+
+
+
+
 export async function addSubscriber(subscriber: Subscriber): Promise<boolean> {
   try {
     const collection = await getWaitlistCollection();
@@ -42,3 +46,19 @@ export async function getSubscriberCount(): Promise<number> {
     return 0;
   }
 }
+
+
+export async function deleteSubscriber(email: string): Promise<boolean> {
+  try {
+    const collection = await getWaitlistCollection();
+    const result = await collection.deleteOne({ email: email });
+    
+    // Check if a document was actually deleted
+    return result.deletedCount === 1;
+  } catch (error) {
+    console.error("[mongodb] Error deleting subscriber:", error);
+    return false;
+  }
+}
+
+

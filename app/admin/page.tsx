@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Users, Calendar, Mail, UserCheck } from "lucide-react";
 import BulkEmailForm from "../components/bulk-email-form";
+import { SubscribersTable } from "./subscribers-table";
 
 export default async function AdminPage() {
   interface Subscriber {
@@ -127,7 +128,7 @@ export default async function AdminPage() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Mail className="h-5 w-5" />
-              All Subscribers
+              All Subscribers ({subscribers.length})
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -136,69 +137,7 @@ export default async function AdminPage() {
                 No subscribers yet. Share your waitlist to get started!
               </div>
             ) : (
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className="border-b">
-                      <th className="text-left py-3 px-4 font-medium">Name</th>
-                      <th className="text-left py-3 px-4 font-medium">Email</th>
-                      <th className="text-left py-3 px-4 font-medium">Role</th>
-                      <th className="text-left py-3 px-4 font-medium">
-                        Joined
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {subscribers
-                      .sort(
-                        (a, b) =>
-                          new Date(b.joinedAt).getTime() -
-                          new Date(a.joinedAt).getTime()
-                      )
-                      .map((subscriber, index) => (
-                        <tr
-                          key={subscriber.email}
-                          className="border-b hover:bg-gray-50"
-                        >
-                          <td className="py-3 px-4 font-medium">
-                            {subscriber.name}
-                          </td>
-                          <td className="py-3 px-4 text-gray-600">
-                            {subscriber.email}
-                          </td>
-                          <td className="py-3 px-4">
-                            <Badge
-                              variant={
-                                subscriber.role === "customer"
-                                  ? "default"
-                                  : "secondary"
-                              }
-                              className={
-                                subscriber.role === "customer"
-                                  ? "bg-green-100 text-green-800"
-                                  : "bg-blue-100 text-blue-800"
-                              }
-                            >
-                              {subscriber.role}
-                            </Badge>
-                          </td>
-                          <td className="py-3 px-4 text-gray-500">
-                            {new Date(subscriber.joinedAt).toLocaleDateString(
-                              "en-US",
-                              {
-                                year: "numeric",
-                                month: "short",
-                                day: "numeric",
-                                hour: "2-digit",
-                                minute: "2-digit",
-                              }
-                            )}
-                          </td>
-                        </tr>
-                      ))}
-                  </tbody>
-                </table>
-              </div>
+              <SubscribersTable initialSubscribers={safeSubscribers} />
             )}
           </CardContent>
         </Card>
