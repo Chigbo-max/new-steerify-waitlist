@@ -4,7 +4,7 @@ interface EmailTemplateProps {
   name?: string;
 }
 
-export function EmailTemplate({ email, name }: EmailTemplateProps) {
+export default function EmailTemplate({ email, name }: EmailTemplateProps) {
   return (
     <div style={{ 
       fontFamily: 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif', 
