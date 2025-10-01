@@ -4,6 +4,7 @@ interface EmailTemplateProps {
   name?: string;
 }
 
+// Change from named export to default export
 export default function EmailTemplate({ email, name }: EmailTemplateProps) {
   return (
     <div style={{ 
