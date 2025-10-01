@@ -27,13 +27,18 @@ export default function BulkEmailForm({ subscribers }: BulkEmailFormProps) {
   const [result, setResult] = useState<string | null>(null);
   const { toast } = useToast();
 
+  // Sort subscribers by email to ensure consistent order
+  const sortedSubscribers = React.useMemo(() => {
+    return [...subscribers].sort((a, b) => a.email.localeCompare(b.email));
+  }, [subscribers]);
+
   useEffect(() => {
     if (selectAll) {
-      setSelected(subscribers.map(s => s.email));
+      setSelected(sortedSubscribers.map(s => s.email));
     } else {
       setSelected([]);
     }
-  }, [selectAll, subscribers]);
+  }, [selectAll, sortedSubscribers]);
 
   const handleCheckbox = (email: string) => {
     setSelected(prev =>
@@ -101,7 +106,7 @@ export default function BulkEmailForm({ subscribers }: BulkEmailFormProps) {
               />
               <span className="font-medium">Select All</span>
             </label>
-            {subscribers.map(s => (
+            {sortedSubscribers.map(s => (
               <label key={s.email} className="flex items-center gap-2">
                 <input
                   type="checkbox"
