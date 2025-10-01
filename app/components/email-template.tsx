@@ -1,119 +1,158 @@
-// components/email-template.tsx
+import * as React from 'react';
+
 interface EmailTemplateProps {
+  name: string;
   email: string;
-  name?: string;
 }
 
-// Change from named export to default export
-export default function EmailTemplate({ email, name }: EmailTemplateProps) {
-  return (
-    <div style={{ 
-      fontFamily: 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif', 
-      lineHeight: '1.5', 
-      padding: '20px',
-      backgroundColor: '#f9fafb'
+export const EmailTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
+  name,
+  email,
+}) => (
+  <div style={{ 
+    fontFamily: 'Arial, sans-serif', 
+    lineHeight: '1.6', 
+    color: '#333',
+    maxWidth: '600px',
+    margin: '0 auto',
+    background: 'linear-gradient(135deg, #3B82F6 0%, #3B82F6 50%, #0EA5E9 100%)',
+    position: 'relative',
+    overflow: 'hidden'
+  }}>
+    {/* Pattern Background Overlay */}
+    <div style={{
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundImage: 'url(https://steerifywaitlist.vercel.app/images/pattern.png)',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      opacity: '0.1',
+      pointerEvents: 'none'
+    }} />
+    
+    {/* Content Container */}
+    <div style={{
+      position: 'relative',
+      zIndex: 1,
+      padding: '40px 30px',
+      color: 'white'
     }}>
-      <div style={{ 
-        maxWidth: '560px', 
-        margin: '0 auto', 
-        backgroundColor: 'white', 
-        borderRadius: '8px', 
-        padding: '40px',
-        boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
-        border: '1px solid #e5e7eb'
-      }}>
-        <div style={{ textAlign: 'center', marginBottom: '30px' }}>
-          <h1 style={{ 
-            color: '#111827', 
-            fontSize: '28px', 
-            fontWeight: 'bold',
-            marginBottom: '16px' 
-          }}>
-            Welcome to Steerify Waitlist! 🎉
-          </h1>
-        </div>
-        
-        <p style={{ 
-          color: '#374151', 
-          fontSize: '16px', 
-          marginBottom: '20px',
-          lineHeight: '1.6'
+      
+      {/* Logo */}
+      <div style={{ textAlign: 'center', marginBottom: '30px' }}>
+        <img 
+          src="https://steerifywaitlist.vercel.app/images/steerify-logo-new.png" 
+          alt="Steerify" 
+          style={{ 
+            height: '50px', 
+            width: 'auto',
+            marginBottom: '20px'
+          }} 
+        />
+        <h1 style={{ 
+          fontSize: '28px', 
+          fontWeight: 'bold',
+          margin: '0',
+          color: 'white'
         }}>
-          Hello {name ? name : 'there'},
-        </p>
-        
-        <p style={{ 
-          color: '#374151', 
-          fontSize: '16px', 
-          marginBottom: '20px',
-          lineHeight: '1.6'
-        }}>
-          Thank you for joining the Steerify waitlist! We're excited to have you on board. 
-          We've received your email address (<strong>{email}</strong>) and will keep you 
-          updated on our progress.
-        </p>
-        
-        <p style={{ 
-          color: '#374151', 
-          fontSize: '16px', 
-          marginBottom: '20px',
-          lineHeight: '1.6'
-        }}>
-          We're working hard to create Nigeria's #1 Smart Cleaning Marketplace and can't 
-          wait to share this amazing platform with you. You'll be among the first to know 
-          when we launch!
-        </p>
-        
-        <div style={{ 
-          backgroundColor: '#f0fdf4',
-          border: '1px solid #bbf7d0',
-          borderRadius: '8px',
-          padding: '16px',
-          margin: '24px 0'
-        }}>
-          <p style={{ 
-            color: '#166534', 
-            fontSize: '14px', 
-            margin: 0,
-            textAlign: 'center',
-            fontWeight: '500'
-          }}>
-            🚀 Early access benefits: Priority bookings, exclusive discounts & premium placement
-          </p>
-        </div>
-        
-        <p style={{ 
-          color: '#374151', 
-          fontSize: '16px', 
-          marginBottom: '8px' 
-        }}>
-          Best regards,
-        </p>
-        <p style={{ 
-          color: '#111827', 
-          fontSize: '16px', 
-          fontWeight: '600',
-          marginBottom: '30px'
-        }}>
-          The Steerify Team
-        </p>
-        
-        <div style={{ 
-          borderTop: '1px solid #e5e7eb', 
-          paddingTop: '20px',
-          textAlign: 'center'
-        }}>
+          Welcome to Steerify! 🎉
+        </h1>
+      </div>
 
-          <p style={{ 
-            color: '#6b7280', 
-            fontSize: '12px',
-            margin: 0
-          }}>
-            Steerify - Nigeria's Smart Cleaning Marketplace<br />
-            Making cleaning services accessible and reliable
+      {/* Main Content Card */}
+      <div style={{
+        backgroundColor: 'white',
+        borderRadius: '12px',
+        padding: '30px',
+        color: '#333',
+        boxShadow: '0 10px 25px rgba(0, 0, 0, 0.1)',
+        marginBottom: '20px'
+      }}>
+        <p style={{ fontSize: '16px', marginBottom: '15px' }}>
+          Hello <strong style={{ color: '#3B82F6' }}>{name}</strong>,
+        </p>
+        
+        <p style={{ fontSize: '16px', marginBottom: '15px' }}>
+          Thank you for joining the Steerify Cleaning waitlist! We're thrilled to have you on board as we revolutionize the cleaning service industry.
+        </p>
+        
+        <p style={{ fontSize: '16px', marginBottom: '20px' }}>
+          You'll be among the first to know when we launch in your area. Get ready to experience seamless cleaning services at your fingertips!
+        </p>
+
+        {/* Info Box */}
+        <div style={{
+          backgroundColor: '#F8FAFC',
+          border: '1px solid #E2E8F0',
+          borderRadius: '8px',
+          padding: '15px',
+          margin: '20px 0'
+        }}>
+          <p style={{ margin: '0', fontSize: '14px', color: '#64748B' }}>
+            <strong style={{ color: '#3B82F6' }}>Registered email:</strong><br />
+            {email}
           </p>
+        </div>
+
+        {/* Next Steps */}
+        <div style={{
+          backgroundColor: '#F0F9FF',
+          borderLeft: '4px solid #0EA5E9',
+          padding: '15px',
+          margin: '20px 0',
+          borderRadius: '0 8px 8px 0'
+        }}>
+          <h3 style={{ 
+            color: '#0C4A6E', 
+            margin: '0 0 10px 0',
+            fontSize: '16px'
+          }}>
+            What's Next?
+          </h3>
+          <ul style={{ 
+            margin: '0', 
+            paddingLeft: '20px',
+            color: '#475569',
+            fontSize: '14px'
+          }}>
+            <li>Early access to our platform</li>
+            <li>Exclusive launch offers</li>
+            <li>Priority booking for services</li>
+          </ul>
         </div>
       </div>
+
+      {/* Footer */}
+      <div style={{ 
+        textAlign: 'center', 
+        color: 'rgba(255, 255, 255, 0.8)',
+        fontSize: '14px'
+      }}>
+        <p style={{ margin: '0 0 10px 0' }}>
+          Best regards,<br />
+          <strong>The Steerify Team</strong>
+        </p>
+        
+        <hr style={{ 
+          border: 'none', 
+          borderTop: '1px solid rgba(255, 255, 255, 0.3)', 
+          margin: '20px 0' 
+        }} />
+        
+        <p style={{ 
+          fontSize: '12px', 
+          color: 'rgba(255, 255, 255, 0.6)',
+          margin: '0'
+        }}>
+          If you didn't sign up for Steerify, please ignore this email.<br />
+          © 2024 Steerify Cleaning. All rights reserved.
+        </p>
+      </div>
     </div>
-  );
-}
+  </div>
+);
+
+export default EmailTemplate;
