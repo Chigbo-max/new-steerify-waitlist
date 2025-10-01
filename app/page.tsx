@@ -8,11 +8,12 @@ export default function Home() {
     <main className="min-h-screen bg-white">
       <WaitlistSignup />
       <Toaster
+
         toastOptions={{
           style: {
             background: "white",
             color: "#0A2540",
-            border: "1px solid #e5e7eb",
+            border: "1px solid #13942dff",
           },
           className: "rounded-xl",
           duration: 5000,
