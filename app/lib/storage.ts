@@ -1,4 +1,7 @@
+import { ObjectId } from "mongodb";
+
 export interface Subscriber {
+  _id?: ObjectId; // Add this line
   name: string;
   email: string;
   role: "customer" | "provider";
@@ -7,22 +10,30 @@ export interface Subscriber {
 
 import { getWaitlistCollection } from "./mongodb";
 
-
-
-
-
 export async function addSubscriber(subscriber: Subscriber): Promise<boolean> {
   try {
     const collection = await getWaitlistCollection();
+    
+    // Check if subscriber exists
     const existing = await collection.findOne({ email: subscriber.email });
     if (existing) {
       console.log("[mongodb] Subscriber already exists:", subscriber.email);
       return false;
     }
-    await collection.insertOne(subscriber);
-    return true;
+    
+    // Insert new subscriber
+    const result = await collection.insertOne(subscriber);
+    console.log("[mongodb] Subscriber added successfully:", subscriber.email);
+    return result.acknowledged;
+    
   } catch (error) {
     console.error("[mongodb] Error adding subscriber:", error);
+    
+    // Check if it's a connection error
+    if (error instanceof Error && error.message.includes("connection")) {
+      throw new Error("Database connection failed");
+    }
+    
     throw error;
   }
 }
@@ -30,7 +41,16 @@ export async function addSubscriber(subscriber: Subscriber): Promise<boolean> {
 export async function getAllSubscribers(): Promise<Subscriber[]> {
   try {
     const collection = await getWaitlistCollection();
-    return await collection.find().toArray();
+    const subscribers = await collection.find().toArray();
+    
+    // Convert MongoDB documents to Subscriber objects
+    return subscribers.map(sub => ({
+      _id: sub._id,
+      name: sub.name,
+      email: sub.email,
+      role: sub.role,
+      joinedAt: sub.joinedAt
+    }));
   } catch (error) {
     console.error("[mongodb] Error fetching all subscribers:", error);
     return [];
@@ -47,7 +67,6 @@ export async function getSubscriberCount(): Promise<number> {
   }
 }
 
-
 export async function deleteSubscriber(email: string): Promise<boolean> {
   try {
     const collection = await getWaitlistCollection();
@@ -60,5 +79,3 @@ export async function deleteSubscriber(email: string): Promise<boolean> {
     return false;
   }
 }
-
-
