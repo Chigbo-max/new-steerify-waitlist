@@ -44,7 +44,7 @@ export const EmailTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
       {/* Logo */}
       <div style={{ textAlign: 'center', marginBottom: '30px' }}>
         <img 
-          src="https://steerifywaitlist.vercel.app/images/steerify-logo-new.png" 
+          src="/images/design-mode/steerify-logo-new.png" 
           alt="Steerify" 
           style={{ 
             height: '50px', 
