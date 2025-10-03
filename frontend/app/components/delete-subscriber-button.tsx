@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
-import { useToast } from "@/components/ui/use-toast";
-import { deleteSubscriberAction } from "../actions/waitlist";
+import { useToast } from "@/hooks/use-toast";
+import { deleteSubscriberAction } from "../../src/services/api";
 
 interface DeleteSubscriberButtonProps {
   email: string;

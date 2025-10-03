@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { joinWaitlist } from "../actions/waitlist";
+import { joinWaitlist } from "../../src/services/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -12,7 +12,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { EnhancedLoaderIcon, EnhancedCheckIcon } from "./icons/enhanced-icons";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 
 interface WaitlistFormProps {
   onSuccess: (count: number) => void;
