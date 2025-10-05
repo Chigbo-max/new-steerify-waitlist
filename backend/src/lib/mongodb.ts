@@ -1,5 +1,5 @@
 import { MongoClient, Db, Collection } from "mongodb";
-import type { Subscriber } from "./storage";
+import type { Subscriber } from "../models/subscriber";
 
 const uri = process.env.MONGODB_URI || "";
 const dbName = process.env.MONGODB_DB || "steerify";

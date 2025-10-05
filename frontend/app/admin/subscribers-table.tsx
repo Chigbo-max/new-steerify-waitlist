@@ -2,14 +2,9 @@
 
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { DeleteSubscriberButton } from "../components/delete-subscriber-button";
-
-interface Subscriber {
-  name: string;
-  email: string;
-  role: "customer" | "provider";
-  joinedAt: string;
-}
+import { Subscriber } from "../../src/types";
 
 interface SubscribersTableProps {
   initialSubscribers: Subscriber[];

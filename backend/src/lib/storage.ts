@@ -1,11 +1,5 @@
-export interface Subscriber {
-  name: string;
-  email: string;
-  role: "customer" | "provider";
-  joinedAt: string;
-}
-
 import { getWaitlistCollection } from "./mongodb";
+import { Subscriber } from "../models/subscriber";
 
 
 

@@ -4,15 +4,9 @@ import React, { useState, useEffect } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
-import { sendBulkEmail } from "../actions/waitlist";
-
-interface Subscriber {
-  name: string;
-  email: string;
-  role: "customer" | "provider";
-  joinedAt: string;
-}
+import { useToast } from "@/hooks/use-toast";
+import { sendBulkEmail } from "../../src/services/api";
+import { Subscriber } from "../../src/types";
 
 interface BulkEmailFormProps {
   subscribers: Subscriber[];

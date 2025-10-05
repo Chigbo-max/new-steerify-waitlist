@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { getWaitlistCount } from "../actions/waitlist";
+import { getWaitlistCount } from "../../src/services/api";
 import { WaitlistForm } from "./waitlist-form";
 import {
   EnhancedUsersIcon,

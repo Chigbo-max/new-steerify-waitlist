@@ -1,17 +1,12 @@
-import { getAllSubscribers } from "../actions/waitlist";
+import { getAllSubscribers } from "../../src/services/api";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Users, Calendar, Mail, UserCheck } from "lucide-react";
 import BulkEmailForm from "../components/bulk-email-form";
 import { SubscribersTable } from "./subscribers-table";
+import { Subscriber } from "../../src/types";
 
 export default async function AdminPage() {
-  interface Subscriber {
-    name: string;
-    email: string;
-    role: "customer" | "provider";
-    joinedAt: string;
-  }
 
   let subscribers: Subscriber[] = [];
   let error: string | null = null;
